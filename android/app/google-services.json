@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055977511756",
+    "project_id": "fun-chat-app-8dd4d",
+    "storage_bucket": "fun-chat-app-8dd4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055977511756:android:1a501665cb30b71c32cde9",
+        "android_client_info": {
+          "package_name": "com.example.fun_chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055977511756-abk1kq84u119hhpokijqelco1m718i0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmddjtNJjnVy5qVCa01PTKfiNJt1D6J8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055977511756-abk1kq84u119hhpokijqelco1m718i0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
