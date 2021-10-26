@@ -48,7 +48,7 @@ class MessageBubbleWidget extends StatelessWidget {
               Text(
                 _message,
                 style: TextStyle(
-                  color: Theme.of(context).accentTextTheme.title.color,
+                  color: Theme.of(context).highlightColor,
                 ),
               ),
             ],
