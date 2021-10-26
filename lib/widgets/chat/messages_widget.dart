@@ -27,9 +27,9 @@ class MessagesWidget extends StatelessWidget {
         itemBuilder: (ctx, index) => Container(
           padding: EdgeInsets.all(10),
           child: MessageBubbleWidget(
-            documents[index].data()['userName'],
-            documents[index].data()['text'],
-            documents[index].data()['userId'] == user.uid,
+            documents[index]['userName'],
+            documents[index]['text'],
+            documents[index]['userId'] == user.uid,
             key: ValueKey(documents[index].id),
           ),
         ),
