@@ -22,6 +22,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
       'created': Timestamp.now(),
       'userId': user.uid,
       'userName': userData.data()!['username'],
+      'userImage':userData.data()!['image_url'],
     });
     _controller.clear();
   }

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 class MessageBubbleWidget extends StatelessWidget {
   final String _message;
   final bool _isMe;
+  final String _userImage;
   final Key key;
   final String _userName;
 
-  MessageBubbleWidget(this._userName, this._message, this._isMe, {required this.key});
+  MessageBubbleWidget(this._userName, this._message, this._userImage,  this._isMe, {required this.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,9 @@ class MessageBubbleWidget extends StatelessWidget {
       mainAxisAlignment: _isMe? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         if(!_isMe)
-        Icon(Icons.account_box_outlined),
+        CircleAvatar(
+          backgroundImage: NetworkImage(_userImage),
+        ),
         Container(
           decoration: BoxDecoration(
             color: _isMe? Colors.deepOrange : Theme.of(context).accentColor,
@@ -43,12 +46,13 @@ class MessageBubbleWidget extends StatelessWidget {
                   _userName,
                  style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Colors.white
                   )
               ),
               Text(
                 _message,
                 style: TextStyle(
-                  color: Theme.of(context).highlightColor,
+                  color: Colors.black,
                 ),
               ),
             ],

@@ -5,21 +5,30 @@ import 'package:image_picker/image_picker.dart';
 
 
 class UserImagePickerWidget extends StatefulWidget {
+  final void Function(File pickedImage) imagePickFn;
+
+  UserImagePickerWidget(this.imagePickFn);
 
   @override
   _UserImagePickerWidgetState createState() => _UserImagePickerWidgetState();
 }
 
 class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
-  File _pickedImage = File('dummy.txt');
+  var _pickedImage;
   bool _isInit = true;
 
   void _pickAnImageWithCamera() async {
     final ImagePicker _imagePicker = ImagePicker();
     try{
-    final XFile? photo = await _imagePicker.pickImage(source: ImageSource.camera);
+    final XFile? photo = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxWidth: 150,
+      maxHeight: 150,
+    );
     setState(() {
       _pickedImage = File(photo!.path);
+      widget.imagePickFn(_pickedImage!);
       _isInit = false;
     });
     }catch(error){
@@ -33,11 +42,17 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
   void _pickAnImageFromGalery() async {
     final ImagePicker _imagePicker = ImagePicker();
     try{
-      final XFile? photo = await _imagePicker.pickImage(source: ImageSource.gallery);
+      final XFile? photo = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+        maxWidth: 150,
+        maxHeight: 150,
+      );
       setState(() {
         _pickedImage = File(photo!.path);
         _isInit = false;
       });
+      widget.imagePickFn(_pickedImage!);
     }catch(error){
       print(error);
       _isInit = true;
@@ -52,7 +67,7 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
           radius: 50,
           backgroundImage:_isInit? null
               :
-          FileImage(_pickedImage),
+          FileImage(_pickedImage!),
           child: _isInit? Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fun_chat_app/widgets/pickers/user_image_picker_widget.dart';
 
 class AuthFormWidget extends StatefulWidget {
-  final void Function(String email, String password, String username, bool isLogin, BuildContext ctx) authFunction;
+  final void Function(String email, String password, String username, File image, bool isLogin, BuildContext ctx) authFunction;
   final bool isLoading;
 
   AuthFormWidget(this.authFunction, this.isLoading);
@@ -16,15 +18,29 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
   var _userEmail = '';
   var _userPassword = '';
   var _userName = '';
+  var _userImage;
+
+  void _pickedImageFn(File pickedImage){
+    _userImage = pickedImage;
+  }
 
   void _submitForm(){
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus(); // Ovo se brine da se tastatura zatvori nakon klika na submit!
-
+    /*if(_userImage != null){
+     Scaffold.of(context).showSnackBar(
+       SnackBar(
+         content: Text('Please pick an image!'),
+         backgroundColor: Theme.of(context).errorColor,
+       )
+     );
+     return;
+    }*/
+    
     if(isValid){
       _formKey.currentState!.save();
 
-      widget.authFunction(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _isLogin, context);
+      widget.authFunction(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _userImage, _isLogin, context);
 
     }
   }
@@ -43,7 +59,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if(!_isLogin)
-                  UserImagePickerWidget(),
+                  UserImagePickerWidget(_pickedImageFn),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value){
