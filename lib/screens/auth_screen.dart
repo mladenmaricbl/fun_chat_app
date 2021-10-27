@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        await FirebaseFirestore.instance.collection('users').doc(authResult.user.uid).set({
+        await FirebaseFirestore.instance.collection('users').doc(authResult.user!.uid).set({
               'username' : username,
               'email': email,
             });
@@ -37,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
       var message = 'An error occurred, please check your credentials!';
 
       if(error.message != null)
-        message = error.message;
+        message = error.message!;
       
       Scaffold.of(ctx).showSnackBar(
         SnackBar(

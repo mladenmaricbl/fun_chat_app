@@ -20,7 +20,7 @@ class MessagesWidget extends StatelessWidget {
       if(chatSnapshot.connectionState == ConnectionState.waiting){
         return _showProgresIndicator();
       }
-      var documents = chatSnapshot.data.docs;
+      var documents = chatSnapshot.data!.docs;
       return ListView.builder(
         reverse: true,
         itemCount: documents.length,
@@ -29,7 +29,7 @@ class MessagesWidget extends StatelessWidget {
           child: MessageBubbleWidget(
             documents[index]['userName'],
             documents[index]['text'],
-            documents[index]['userId'] == user.uid,
+            documents[index]['userId'] == user!.uid,
             key: ValueKey(documents[index].id),
           ),
         ),

@@ -7,7 +7,7 @@ class MessageBubbleWidget extends StatelessWidget {
   final Key key;
   final String _userName;
 
-  MessageBubbleWidget(this._userName, this._message, this._isMe, {this.key});
+  MessageBubbleWidget(this._userName, this._message, this._isMe, {required this.key});
 
   @override
   Widget build(BuildContext context) {
