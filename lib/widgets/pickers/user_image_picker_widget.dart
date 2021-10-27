@@ -11,7 +11,8 @@ class UserImagePickerWidget extends StatefulWidget {
 }
 
 class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
-  File _pickedImage = File('assets/images/waiting.png');
+  File _pickedImage = File('dummy.txt');
+  bool _isInit = true;
 
   void _pickAnImageWithCamera() async {
     final ImagePicker _imagePicker = ImagePicker();
@@ -19,9 +20,13 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
     final XFile? photo = await _imagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _pickedImage = File(photo!.path);
+      _isInit = false;
     });
     }catch(error){
       print(error);
+      setState(() {
+        _isInit = true;
+      });
     }
   }
 
@@ -31,9 +36,11 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
       final XFile? photo = await _imagePicker.pickImage(source: ImageSource.gallery);
       setState(() {
         _pickedImage = File(photo!.path);
+        _isInit = false;
       });
     }catch(error){
       print(error);
+      _isInit = true;
     }
   }
 
@@ -43,7 +50,19 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
       children: [
         CircleAvatar(
           radius: 50,
-          backgroundImage: FileImage(_pickedImage),
+          backgroundImage:_isInit? null
+              :
+          FileImage(_pickedImage),
+          child: _isInit? Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              image: DecorationImage(image: new AssetImage('assets/images/dummy_user.png'),
+              fit: BoxFit.cover,
+              ),
+            ),
+          )
+          :
+          null,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
