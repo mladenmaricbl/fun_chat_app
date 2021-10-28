@@ -18,24 +18,19 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
   var _userEmail = '';
   var _userPassword = '';
   var _userName = '';
-  var _userImage;
+  File _userImage = File('');
 
   void _pickedImageFn(File pickedImage){
     _userImage = pickedImage;
   }
 
+  bool _checkIfFileExists(File f) {
+    return f.existsSync() ? true : false;
+  }
+
   void _submitForm(){
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus(); // Ovo se brine da se tastatura zatvori nakon klika na submit!
-    /*if(_userImage != null){
-     Scaffold.of(context).showSnackBar(
-       SnackBar(
-         content: Text('Please pick an image!'),
-         backgroundColor: Theme.of(context).errorColor,
-       )
-     );
-     return;
-    }*/
     
     if(isValid){
       _formKey.currentState!.save();

@@ -14,7 +14,7 @@ class UserImagePickerWidget extends StatefulWidget {
 }
 
 class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
-  var _pickedImage;
+  File _pickedImage = File('');
   bool _isInit = true;
 
   void _pickAnImageWithCamera() async {
@@ -28,7 +28,7 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
     );
     setState(() {
       _pickedImage = File(photo!.path);
-      widget.imagePickFn(_pickedImage!);
+      widget.imagePickFn(_pickedImage);
       _isInit = false;
     });
     }catch(error){
@@ -52,7 +52,7 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
         _pickedImage = File(photo!.path);
         _isInit = false;
       });
-      widget.imagePickFn(_pickedImage!);
+      widget.imagePickFn(_pickedImage);
     }catch(error){
       print(error);
       _isInit = true;
@@ -67,7 +67,7 @@ class _UserImagePickerWidgetState extends State<UserImagePickerWidget> {
           radius: 50,
           backgroundImage:_isInit? null
               :
-          FileImage(_pickedImage!),
+          FileImage(_pickedImage),
           child: _isInit? Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
