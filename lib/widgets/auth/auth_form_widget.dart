@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fun_chat_app/widgets/pickers/user_image_picker_widget.dart';
 
 class AuthFormWidget extends StatefulWidget {
-  final void Function(String email, String password, String username, bool isLogin, BuildContext ctx) authFunction;
+  final void Function(String email, String password, String username, File image, bool isLogin, BuildContext ctx) authFunction;
   final bool isLoading;
 
   AuthFormWidget(this.authFunction, this.isLoading);
@@ -15,15 +18,24 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
   var _userEmail = '';
   var _userPassword = '';
   var _userName = '';
+  File _userImage = File('');
+
+  void _pickedImageFn(File pickedImage){
+    _userImage = pickedImage;
+  }
+
+  bool _checkIfFileExists(File f) {
+    return f.existsSync() ? true : false;
+  }
 
   void _submitForm(){
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus(); // Ovo se brine da se tastatura zatvori nakon klika na submit!
-
+    
     if(isValid){
-      _formKey.currentState.save();
+      _formKey.currentState!.save();
 
-      widget.authFunction(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _isLogin, context);
+      widget.authFunction(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _userImage, _isLogin, context);
 
     }
   }
@@ -42,19 +54,11 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if(!_isLogin)
-                  CircleAvatar(
-                    radius: 50,
-                  ),
-                  if(!_isLogin)
-                  FlatButton.icon(
-                      onPressed: (){},
-                      icon: Icon(Icons.image_outlined),
-                      label: Text('Add image'),
-                  ),
+                  UserImagePickerWidget(_pickedImageFn),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value){
-                      if(value.isEmpty || !value.contains('@'))
+                      if(value!.isEmpty || !value.contains('@'))
                         return 'Please enter a valid e-mail!';
 
                       return null;
@@ -62,27 +66,27 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'E-mail'),
                     onSaved: (value){
-                      _userEmail = value;
+                      _userEmail = value!;
                     },
                   ),
                   if(!_isLogin)
                    TextFormField(
                     key: ValueKey('username'),
                     validator: (value){
-                      if(value.isEmpty || value.length < 3)
+                      if(value!.isEmpty || value.length < 3)
                         return 'Please enter username that is greater than 3 characters!';
 
                       return null;
                     },
                     decoration: InputDecoration(labelText: 'Username'),
                     onSaved: (value){
-                      _userName = value;
+                      _userName = value!;
                     }
                   ),
                   TextFormField(
                     key: ValueKey('password'),
                     validator: (value){
-                      if(value.isEmpty || value.length < 7)
+                      if(value!.isEmpty || value.length < 7)
                         return 'Password must contain more than 6 characters!';
 
                       return null;
@@ -90,7 +94,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                     decoration: InputDecoration(labelText: 'Password'),
                     obscureText: true,
                     onSaved: (value){
-                      _userPassword = value;
+                      _userPassword = value!;
                     }
                   ),
                   SizedBox(
