@@ -3,8 +3,46 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fun_chat_app/widgets/chat/messages_widget.dart';
 import 'package:fun_chat_app/widgets/chat/new_message_widget.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  late FirebaseMessaging messaging;
+
+  @override
+  void initState() {
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print('Token value: ${value}');
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Notification"),
+              content: Text(event.notification!.body!),
+              actions: [
+                TextButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('***MESSAGE CLICKED***');
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

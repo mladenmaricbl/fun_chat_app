@@ -1,11 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fun_chat_app/screens/auth_screen.dart';
 import 'package:fun_chat_app/screens/chat_screen.dart';
 import 'package:fun_chat_app/screens/splash_screen.dart';
 
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('BACKGROUND MASSAGE ===> ${message.notification!.body}');
+}
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   runApp(MyApp());
 }
 
